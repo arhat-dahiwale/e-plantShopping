@@ -12,7 +12,9 @@ const CartItem = ({ onContinueShopping }) => {
     let total = 0;
     cart.forEach((item) => {
       const quantity = item.quantity;
-      const cost = parseFloat(item.cost.substring(1)); // remove "$" and convert to number
+      const cost = typeof item.cost === 'string' 
+  ? parseFloat(item.cost.replace('$', ''))
+  : item.cost;// remove "$" and convert to number
       total += quantity * cost;
     });
     return total.toFixed(2);
@@ -54,7 +56,9 @@ const CartItem = ({ onContinueShopping }) => {
 
   // 6. Calculate subtotal for one item
   const calculateTotalCost = (item) => {
-    const cost = parseFloat(item.cost.substring(1));
+    const cost = typeof item.cost === 'string' 
+  ? parseFloat(item.cost.replace('$', ''))
+  : item.cost;
     return (cost * item.quantity).toFixed(2);
   };
 
