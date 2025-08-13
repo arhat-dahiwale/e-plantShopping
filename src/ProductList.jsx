@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { addItem } from './CartSlice'; // Adjust path if different
 
 
+
+
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
@@ -223,7 +225,7 @@ function ProductList({ onHomeClick }) {
         padding: '15px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignIems: 'center',
+        alignItems: 'center',
         fontSize: '20px',
     }
     const styleObjUl = {
@@ -258,15 +260,17 @@ function ProductList({ onHomeClick }) {
     const dispatch = useDispatch();
 
     const handleAddToCart = (plant) => {
-        // Add plant to Redux cart
-        dispatch(addItem(plant));
+    dispatch(addItem({
+        ...plant,
+        cost: Number(plant.cost.replace('$', ''))
+    }));
 
-        // Mark plant as added in local state
-        setAddedToCart(prev => ({
-            ...prev,
-            [plant.name]: true
-        }));
-    };
+    setAddedToCart(prev => ({
+        ...prev,
+        [plant.name]: true
+    }));
+};
+
 
 
     const handleContinueShopping = (e) => {
@@ -311,7 +315,7 @@ function ProductList({ onHomeClick }) {
                             <div className="product-title">{plant.name}</div> {/* Display plant name */}
                             {/* Display other plant details like description and cost */}
                             <div className="product-description">{plant.description}</div> {/* Display plant description */}
-                            <div className="product-cost">${plant.cost}</div> {/* Display plant cost */}
+                            <div className="product-cost">{plant.cost}</div> {/* Display plant cost */}
                             <button
                                 className="product-button"
                                 onClick={() => handleAddToCart(plant)}
